@@ -5,16 +5,17 @@
 //  Created by 오정석 on 29/10/2025.
 //
 
-import Combine
 import SwiftUI
+import Observation
 
 // MARK: - TodoViewModel
 
-class TodoViewModel: ObservableObject {
-    @Published var todos: [TodoItem] = []
-    @Published var newTodoTitle = ""
-    @Published var filterOption: FilterOption = .all
-    
+@Observable
+class TodoViewModel {
+    var todos: [TodoItem] = []
+    var newTodoTitle = ""
+    var filterOption: FilterOption = .all
+
     enum FilterOption: String, CaseIterable {
         case all = "전체"
         case active = "진행중"
@@ -40,6 +41,8 @@ class TodoViewModel: ObservableObject {
         todos.filter { !$0.isCompleted }.count
     }
     
+    // MARK: - Function
+
     func addTodo() {
         guard !newTodoTitle.isEmpty else { return }
         

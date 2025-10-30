@@ -7,12 +7,23 @@
 
 import SwiftUI
 
-struct TodoRow: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+// MARK: - TodoRow
 
-#Preview {
-    TodoRow()
+struct TodoRow: View {
+    let todo: TodoItem
+    let onToggle: () -> Void
+    
+    var body: some View {
+        HStack {
+            Image(systemName: todo.isCompleted ? "checkmark.circle.fill" : "circle")
+                .foregroundStyle(todo.isCompleted ? .green : .gray)
+                .onTapGesture {
+                    onToggle()
+                }
+            
+            Text(todo.title)
+                .strikethrough(todo.isCompleted)
+                .foregroundStyle(todo.isCompleted ? .gray : .primary)
+        } //:HSTACK
+    }
 }

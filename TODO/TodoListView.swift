@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: - TodoList
 
 struct TodoListView: View {
-    @StateObject private var viewModel = TodoViewModel()
+    @State private var viewModel = TodoViewModel()
         
     var body: some View {
         NavigationStack {
@@ -61,28 +61,6 @@ struct TodoListView: View {
         } //:NAVSTACK
     }
 }
-
-// MARK: - TodoRow
-
-struct TodoRow: View {
-    let todo: TodoItem
-    let onToggle: () -> Void
-    
-    var body: some View {
-        HStack {
-            Image(systemName: todo.isCompleted ? "checkmark.circle.fill" : "circle")
-                .foregroundStyle(todo.isCompleted ? .green : .gray)
-                .onTapGesture {
-                    onToggle()
-                }
-            
-            Text(todo.title)
-                .strikethrough(todo.isCompleted)
-                .foregroundStyle(todo.isCompleted ? .gray : .primary)
-        } //:HSTACK
-    }
-}
-
 
 #Preview {
     TodoListView()
