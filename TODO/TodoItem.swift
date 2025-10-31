@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - TodoItem
 
-struct TodoItem: Identifiable {
+struct TodoItem: Identifiable, Hashable {
     let id: String = UUID().uuidString
     var title: String
     var isCompleted: Bool = false
