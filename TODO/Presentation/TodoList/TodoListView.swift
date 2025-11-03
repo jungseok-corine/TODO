@@ -19,26 +19,45 @@ enum TodoRoute: Hashable {
 struct TodoListView: View {
     
     // MARK: -  PROPERTY
-    @State private var viewModel = TodoViewModel()
+    @State private var viewModel = DIContainer.shared.makeTodoViewModel()
     @State private var navigationPath = NavigationPath()
-        
+    
     // MARK: -  BODY
     var body: some View {
         NavigationStack(path: $navigationPath) {
-            VStack(spacing: 20) {
+            VStack {
                 // 입력 영역
                 HStack {
                     TextField("새로운 할일", text: $viewModel.newTodoTitle)
                         .textFieldStyle(.roundedBorder)
+                        .submitLabel(.done)
+                        .onSubmit {
+                            Task { await viewModel.addTodo() }
+                        }
                     
                     Button {
-                        viewModel.addTodo()
+                        Task { await viewModel.addTodo() }
                     } label: {
                         Image(systemName: "plus.circle.fill")
                             .font(.title2)
                     }
+                    .disabled(viewModel.newTodoTitle.isEmpty)
                 } //:HSTACK
                 .padding()
+                
+                // 에러 메시지
+                if let error = viewModel.errorMessage {
+                    Text(error)
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                        .padding(.horizontal)
+                }
+                
+                // 로딩 표시
+                if viewModel.isLoading {
+                    ProgressView("불러오는 중...")
+                        .padding()
+                }
                 
                 // 통계
                 HStack {
@@ -62,13 +81,17 @@ struct TodoListView: View {
                 List {
                     ForEach(viewModel.todos) { todo in
                         TodoRow(todo: todo) {
-                            viewModel.toggleComplete(todo: todo)
+                            Task { await viewModel.toggleComplete(todo: todo) }
                         }
                     }
-                    .onDelete(perform: viewModel.deleteTodo)
+                    .onDelete { offsets in
+                        Task { await viewModel.deleteTodo(at: offsets)}
+                    }
                 } //:LIST
+                .listStyle(.plain)
             } //:VSTACK
             .navigationTitle("TODO")
+            .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: TodoRoute.self) { route in
                 switch route {
                 case .detail(let todo):
@@ -98,6 +121,12 @@ struct TodoListView: View {
                     }
                 }
             }
+            .task {
+                await viewModel.loadTodos()
+            }
+            .refreshable {
+                await viewModel.loadTodos()
+            }
         } //:NAVSTACK
         .onOpenURL { url in
             handleDeepLink(url: url)
@@ -106,12 +135,11 @@ struct TodoListView: View {
     
     // MARK: -  FUNCTION
     private func handleDeepLink(url: URL) {
-        
         guard url.scheme == "todoapp",
               url.host == "detail",
               let id = url.pathComponents.last,
               let uuid = UUID(uuidString: id),
-              let todo = viewModel.todos.first(where: { $0.id == id }) else {
+              let todo = viewModel.todos.first(where: { $0.id == uuid }) else {
             print("잘못된 Deep Link")
             return
         }
