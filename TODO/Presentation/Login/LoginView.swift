@@ -145,7 +145,7 @@ struct LoginView: View {
                         Spacer()
                         
                         NavigationLink("회원가입") {
-                            Text("회원가입 화면")
+                            SignUpView() // 해당 부분 NavigationPath에 추가해야함
                         }
                         .font(.subheadline)
                     } //:HSTACK - 추가 옵션
