@@ -79,7 +79,7 @@ struct TodoListView: View {
                 
                 // 리스트
                 List {
-                    ForEach(viewModel.todos) { todo in
+                    ForEach(viewModel.filteredTodos) { todo in
                         TodoRow(todo: todo) {
                             Task { await viewModel.toggleComplete(todo: todo) }
                         }
