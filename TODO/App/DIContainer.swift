@@ -17,7 +17,7 @@ class DIContainer {
     
     /// TdodoRepository 인스턴스 (전역에서 하나만 사용)
     private lazy var todoRepository: TodoRepositoryProtocol = {
-        TodoRepository.shared
+        return UserDefaultsTodoRepository.shared
     }()
     
     // MARK: - UseCases
