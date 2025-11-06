@@ -7,8 +7,8 @@
 
 import Foundation
 
-enum TodoFilter {
-    case all
-    case active
-    case completed
+enum TodoFilter: String, CaseIterable {
+    case all = "전체"
+    case active = "진행중"
+    case completed = "완료"
 }
