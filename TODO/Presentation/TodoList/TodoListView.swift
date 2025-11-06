@@ -19,13 +19,29 @@ enum TodoRoute: Hashable {
 struct TodoListView: View {
     
     // MARK: -  PROPERTY
-    @State private var viewModel = DIContainer.shared.makeTodoViewModel()
+    @State private var viewModel: TodoViewModel = DIContainer.shared.makeTodoViewModel()
+    @Environment(\.managedObjectContext) private var viewContext
     @State private var navigationPath = NavigationPath()
+    
+    // ⭐️ Alert 표시 상태 추가
+    @State private var showErrorAlert = false
     
     // MARK: -  BODY
     var body: some View {
         NavigationStack(path: $navigationPath) {
             VStack {
+                // 검색바
+                SearchBar(text: $viewModel.searchQuery)
+                
+                // 필터
+                Picker("필터", selection: $viewModel.filterOption) {
+                    ForEach(TodoViewModel.FilterOption.allCases, id: \.self) { option in
+                        Text(option.rawValue).tag(option)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .padding()
+                
                 // 입력 영역
                 HStack {
                     TextField("새로운 할일", text: $viewModel.newTodoTitle)
@@ -39,6 +55,7 @@ struct TodoListView: View {
                         Task { await viewModel.addTodo() }
                     } label: {
                         Image(systemName: "plus.circle.fill")
+                            .imageScale(.large)
                             .font(.title2)
                     }
                     .disabled(viewModel.newTodoTitle.isEmpty)
@@ -55,52 +72,40 @@ struct TodoListView: View {
                 
                 // 로딩 표시
                 if viewModel.isLoading {
-                    ProgressView("불러오는 중...")
-                        .padding()
-                }
-                
-                // 통계
-                HStack {
-                    Label("\(viewModel.activeCount)", systemImage: "circle")
                     Spacer()
-                    Label("\(viewModel.completedCount)", systemImage: "checkmark.circle.fill")
-                } //:HSTACK
-                .padding(.horizontal)
-                .font(.subheadline)
-                
-                // 필터
-                Picker("필터", selection: $viewModel.filterOption) {
-                    ForEach(TodoViewModel.FilterOption.allCases, id: \.self) { option in
-                        Text(option.rawValue).tag(option)
+                    ProgressView()
+                    Spacer()
+                } else if viewModel.filteredTodos.isEmpty {
+                    Spacer()
+                    VStack(spacing: 12) {
+                        Image(systemName: "checkmark.circle")
+                            .font(.system(size: 60))
+                            .foregroundStyle(.secondary)
+                        
+                        Text("할 일이 없습니다")
+                            .foregroundStyle(.secondary)
                     }
-                }
-                .pickerStyle(.segmented)
-                .padding()
-                
-                // 리스트
-                List {
-                    ForEach(viewModel.filteredTodos) { todo in
-                        TodoRow(todo: todo) {
-                            Task { await viewModel.toggleComplete(todo: todo) }
+                    Spacer()
+                } else {
+                    List {
+                        ForEach(viewModel.filteredTodos, id: \.id) { todo in
+                            TodoRow(todo: todo) {
+                                Task { await viewModel.toggleComplete(todo: todo)}
+                            }
+                        } //:LOOP
+                        .onDelete { indexSet in
+                            indexSet.forEach { index in
+                                let todo = viewModel.filteredTodos[index]
+                                Task { await viewModel.deleteTodo(at: todo.id)}
+                            }
                         }
-                    }
-                    .onDelete { offsets in
-                        Task { await viewModel.deleteTodo(at: offsets)}
-                    }
-                } //:LIST
-                .listStyle(.plain)
+                    } //:LIST
+                }
             } //:VSTACK
             .navigationTitle("TODO")
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: TodoRoute.self) { route in
-                switch route {
-                case .detail(let todo):
-                    TodoDetailView(todo: todo)
-                case .settings:
-                    SettingsView()
-                case .statistics:
-                    StatisticsView()
-                }
+                destination(for: route)
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -127,6 +132,17 @@ struct TodoListView: View {
             .refreshable {
                 await viewModel.loadTodos()
             }
+            // ⭐️ Error Alert 추가
+            .alert("오류", isPresented: $showErrorAlert) {
+                Button("확인", role: .cancel) { viewModel.errorMessage = nil }
+            } message: {
+                Text(viewModel.errorMessage ?? "")
+            }
+            .onChange(of: viewModel.errorMessage) { oldValue, newValue in
+                if newValue != nil {
+                    showErrorAlert = true
+                }
+            }
         } //:NAVSTACK
         .onOpenURL { url in
             handleDeepLink(url: url)
@@ -144,6 +160,18 @@ struct TodoListView: View {
             return
         }
         navigationPath.append(TodoRoute.detail(todo))
+    }
+    
+    @ViewBuilder
+    private func destination(for route: TodoRoute) -> some View {
+        switch route {
+        case .detail(let todo):
+            TodoDetailView(todo: todo)
+        case .settings:
+            SettingsView()
+        case .statistics:
+            StatisticsView()
+        }
     }
 }
 

@@ -17,38 +17,13 @@ class TodoViewModel {
     var newTodoTitle = ""
     var isLoading = false
     var filterOption: FilterOption = .all
+    var searchQuery = ""
     var errorMessage: String?
     
     private let fetchTodosUseCase: FetchTodosUseCase
     private let addTodoUseCase: AddTodoUseCase
     private let toggleTodoUseCase: ToggleTodoUseCase
     private let deleteTodoUseCase: DeleteTodoUseCase
-    
-    // MARK: - FilterOption
-    enum FilterOption: String, CaseIterable {
-        case all = "전체"
-        case active = "진행중"
-        case completed = "완료"
-    }
-    
-    // MARK: - Computed Properties
-    var filteredTodos: [TodoItem] {
-        switch filterOption {
-        case .all:
-            return todos
-        case .active:
-            return todos.filter { !$0.isCompleted }
-        case .completed:
-            return todos.filter { $0.isCompleted }
-        }
-    }
-    var completedCount: Int {
-        todos.filter { $0.isCompleted }.count
-    }
-    
-    var activeCount: Int {
-        todos.filter { !$0.isCompleted }.count
-    }
     
     // MARK: -  init
     init(fetchTodosUseCase: FetchTodosUseCase,
@@ -61,6 +36,32 @@ class TodoViewModel {
         self.deleteTodoUseCase = deleteTodoUseCase
     }
     
+    // MARK: - Computed Properties
+    var filteredTodos: [TodoItem] {
+        let filtered = todos.filter { todo in
+            if !searchQuery.isEmpty {
+                return todo.title.localizedCaseInsensitiveContains(searchQuery)
+            }
+            return true
+        }
+        
+        switch filterOption {
+        case .all:
+            return filtered
+        case .active:
+            return filtered.filter { !$0.isCompleted }
+        case .completed:
+            return filtered.filter { $0.isCompleted }
+        }
+    }
+    var completedCount: Int {
+        todos.filter { $0.isCompleted }.count
+    }
+    
+    var activeCount: Int {
+        todos.filter { !$0.isCompleted }.count
+    }
+    
     // MARK: - Function
     func loadTodos() async {
         isLoading = true
@@ -69,21 +70,23 @@ class TodoViewModel {
         do {
             todos = try await fetchTodosUseCase.execute()
         } catch {
-            errorMessage = error.localizedDescription
+            errorMessage = "할 일 목록을 불러올 수 없습니다"
             print("❌ 할 일 불러오기 실패: \(error)")
         }
         isLoading = false
     }
     
     func addTodo() async {
-        guard !newTodoTitle.isEmpty else { return }
+        guard !newTodoTitle.trimmingCharacters(in: .whitespaces).isEmpty else {
+            return
+        }
         
         do {
             try await addTodoUseCase.execute(title: newTodoTitle)
             newTodoTitle = ""
             await loadTodos()
         } catch {
-            errorMessage = error.localizedDescription
+            errorMessage = "할 일 추가에 실패했습니다"
             print("❌ 할 일 추가 실패: \(error)")
         }
     }
@@ -93,22 +96,19 @@ class TodoViewModel {
             try await toggleTodoUseCase.execute(todo: todo)
             await loadTodos()
         } catch {
-            errorMessage = error.localizedDescription
+            errorMessage = "상태 변경에 실패했습니다"
             print("❌ 할 일 토글 실패: \(error)")
         }
     }
     
-    func deleteTodo(at offsets: IndexSet) async {
-        for index in offsets {
-            let todo = filteredTodos[index]
-            do {
-                try await deleteTodoUseCase.execute(id: todo.id)
-            } catch {
-                errorMessage = error.localizedDescription
-                print("❌ 할 일 삭제 실패: \(error)")
-            }
+    func deleteTodo(id: UUID) async {
+        do {
+            try await deleteTodoUseCase.execute(id: id)
+            await loadTodos()
+        } catch {
+            errorMessage = "삭제에 실패했습니다"
+            print("❌ 할 일 삭제 실패: \(error)")
         }
-        await loadTodos()
     }
 }
 

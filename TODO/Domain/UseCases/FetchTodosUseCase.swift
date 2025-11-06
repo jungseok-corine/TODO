@@ -16,7 +16,16 @@ class FetchTodosUseCase {
         self.repository = repository
     }
     
-    func execute() async throws -> [TodoItem] {
-        return try await repository.fetchAll()
+    func execute(filter: TodoFilter = .all) async throws -> [TodoItem] {
+        let todos = try await repository.fetchAll()
+        
+        switch filter {
+        case .all:
+            return todos
+        case .active:
+            return todos.filter { !$0.isCompleted }
+        case .completed:
+            return todos.filter { $0.isCompleted }
+        }
     }
 }

@@ -15,10 +15,11 @@ struct TodoRow: View {
     
     var body: some View {
         HStack(spacing: 12) {
+            // 체크박스
             Button(action: onToggle) {
                 Image(systemName: todo.isCompleted ? "checkmark.circle.fill" : "circle")
                     .foregroundStyle(todo.isCompleted ? .green : .gray)
-                    .font(.title3)
+                    .imageScale(.large)
             }
             .buttonStyle(.plain)
             
@@ -27,12 +28,23 @@ struct TodoRow: View {
                     .strikethrough(todo.isCompleted)
                     .foregroundStyle(todo.isCompleted ? .secondary : .primary)
                 
-                Text(todo.createdAt, style: .relative)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                if let detail = todo.detail, !detail.isEmpty {
+                    Text(detail)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                
+                HStack {
+                    PriorityBadge(priority: todo.priority)
+                    
+                    Text(todo.createdAt, format: .dateTime.month().day().hour())
+                        .font(.caption)
+                        .foregroundStyle(.tertiary)
+                }
             }
             
             Spacer()
         } //:HSTACK
+        .padding(.vertical, 4)
     }
 }
