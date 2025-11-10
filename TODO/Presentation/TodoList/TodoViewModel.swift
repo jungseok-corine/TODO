@@ -16,7 +16,7 @@ class TodoViewModel {
     var todos: [TodoItem] = []
     var newTodoTitle = ""
     var isLoading = false
-    var filterOption: FilterOption = .all
+    var filterOption: TodoFilter = .all
     var searchQuery = ""
     var errorMessage: String?
     

@@ -31,100 +31,23 @@ struct TodoListView: View {
         NavigationStack(path: $navigationPath) {
             VStack {
                 // 검색바
-                SearchBar(text: $viewModel.searchQuery)
-                
+                searchSection
                 // 필터
-                Picker("필터", selection: $viewModel.filterOption) {
-                    ForEach(TodoViewModel.FilterOption.allCases, id: \.self) { option in
-                        Text(option.rawValue).tag(option)
-                    }
-                }
-                .pickerStyle(.segmented)
-                .padding()
-                
+                filterSection
                 // 입력 영역
-                HStack {
-                    TextField("새로운 할일", text: $viewModel.newTodoTitle)
-                        .textFieldStyle(.roundedBorder)
-                        .submitLabel(.done)
-                        .onSubmit {
-                            Task { await viewModel.addTodo() }
-                        }
-                    
-                    Button {
-                        Task { await viewModel.addTodo() }
-                    } label: {
-                        Image(systemName: "plus.circle.fill")
-                            .imageScale(.large)
-                            .font(.title2)
-                    }
-                    .disabled(viewModel.newTodoTitle.isEmpty)
-                } //:HSTACK
-                .padding()
-                
+                inputSection
                 // 에러 메시지
-                if let error = viewModel.errorMessage {
-                    Text(error)
-                        .font(.caption)
-                        .foregroundStyle(.red)
-                        .padding(.horizontal)
-                }
-                
-                // 로딩 표시
-                if viewModel.isLoading {
-                    Spacer()
-                    ProgressView()
-                    Spacer()
-                } else if viewModel.filteredTodos.isEmpty {
-                    Spacer()
-                    VStack(spacing: 12) {
-                        Image(systemName: "checkmark.circle")
-                            .font(.system(size: 60))
-                            .foregroundStyle(.secondary)
-                        
-                        Text("할 일이 없습니다")
-                            .foregroundStyle(.secondary)
-                    }
-                    Spacer()
-                } else {
-                    List {
-                        ForEach(viewModel.filteredTodos, id: \.id) { todo in
-                            TodoRow(todo: todo) {
-                                Task { await viewModel.toggleComplete(todo: todo)}
-                            }
-                        } //:LOOP
-                        .onDelete { indexSet in
-                            indexSet.forEach { index in
-                                let todo = viewModel.filteredTodos[index]
-                                Task { await viewModel.deleteTodo(at: todo.id)}
-                            }
-                        }
-                    } //:LIST
-                }
-            } //:VSTACK
+                errorSection
+                // 컨텐츠 영역
+                contentSection
+            }
             .navigationTitle("TODO")
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: TodoRoute.self) { route in
                 destination(for: route)
             }
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Menu {
-                        Button {
-                            navigationPath.append(TodoRoute.settings)
-                        } label: {
-                            Label("설정", systemImage: "gear")
-                        }
-                        
-                        Button {
-                            navigationPath.append(TodoRoute.statistics)
-                        } label: {
-                            Label("통계", systemImage: "chart.bar")
-                        }
-                    } label: {
-                        Image(systemName: "ellipsis.circle")
-                    }
-                }
+                toolbarContent
             }
             .task {
                 await viewModel.loadTodos()
@@ -150,6 +73,108 @@ struct TodoListView: View {
     }
     
     // MARK: -  FUNCTION
+    private var searchSection: some View {
+        SearchBar(text: $viewModel.searchQuery)
+    }
+    
+    private var filterSection: some View {
+        // 필터
+        Picker("필터", selection: $viewModel.filterOption) {
+            ForEach(TodoFilter.allCases, id: \.self) { option in
+                Text(option.rawValue).tag(option)
+            }
+        }
+        .pickerStyle(.segmented)
+        .padding()
+    }
+    
+    private var inputSection: some View {
+        HStack {
+            TextField("새로운 할일", text: $viewModel.newTodoTitle)
+                .textFieldStyle(.roundedBorder)
+                .submitLabel(.done)
+                .onSubmit {
+                    Task { await viewModel.addTodo() }
+                }
+            
+            Button {
+                Task { await viewModel.addTodo() }
+            } label: {
+                Image(systemName: "plus.circle.fill")
+                    .imageScale(.large)
+                    .font(.title2)
+            }
+            .disabled(viewModel.newTodoTitle.isEmpty)
+        } //:HSTACK
+        .padding()
+    }
+    
+    @ViewBuilder
+    private var errorSection: some View {
+        // 에러 메시지
+        if let error = viewModel.errorMessage {
+            Text(error)
+                .font(.caption)
+                .foregroundStyle(.red)
+                .padding(.horizontal)
+        }
+    }
+    
+    @ViewBuilder
+    private var contentSection: some View {
+        if viewModel.isLoading {
+            Spacer()
+            ProgressView()
+            Spacer()
+        } else if viewModel.filteredTodos.isEmpty {
+            Spacer()
+            VStack(spacing: 12) {
+                Image(systemName: "checkmark.circle")
+                    .font(.system(size: 60))
+                    .foregroundStyle(.secondary)
+                
+                Text("할 일이 없습니다")
+                    .foregroundStyle(.secondary)
+            } //:VSTACK
+            Spacer()
+        } else {
+            List {
+                ForEach(viewModel.filteredTodos, id: \.id) { todo in
+                    TodoRow(todo: todo) {
+                        Task { await viewModel.toggleComplete(todo: todo)}
+                    }
+                } //:LOOP
+                .onDelete { indexSet in
+                    indexSet.forEach { index in
+                        let todo = viewModel.filteredTodos[index]
+                        Task { await viewModel.deleteTodo(id: todo.id)}
+                    }
+                }
+            } //:LIST
+        }
+    }
+    
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            Menu {
+                Button {
+                    navigationPath.append(TodoRoute.settings)
+                } label: {
+                    Label("설정", systemImage: "gear")
+                }
+                
+                Button {
+                    navigationPath.append(TodoRoute.statistics)
+                } label: {
+                    Label("통계", systemImage: "chart.bar")
+                }
+            } label: {
+                Image(systemName: "ellipsis.circle")
+            }
+        }
+    }
+    
     private func handleDeepLink(url: URL) {
         guard url.scheme == "todoapp",
               url.host == "detail",

@@ -11,11 +11,32 @@
 		99D40B682EBADEAD0028D909 /* TodoEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D40B662EBADEAD0028D909 /* TodoEntity+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		998AC8022EC1781D005DFF49 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 992EA59D2EB1CDF400D0B1BA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 992EA5A42EB1CDF400D0B1BA;
+			remoteInfo = TODO;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		992EA5A52EB1CDF400D0B1BA /* TODO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TODO.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		998AC7FE2EC1781D005DFF49 /* TODOTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TODOTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		99D40B652EBADEAD0028D909 /* TodoEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodoEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		99D40B662EBADEAD0028D909 /* TodoEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodoEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		998AC8152EC17A70005DFF49 /* Exceptions for "TODOAppTests" folder in "TODO" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				MockTodoRepository.swift,
+			);
+			target = 992EA5A42EB1CDF400D0B1BA /* TODO */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		992EA5A72EB1CDF400D0B1BA /* TODO */ = {
@@ -23,10 +44,25 @@
 			path = TODO;
 			sourceTree = "<group>";
 		};
+		998AC7FF2EC1781D005DFF49 /* TODOAppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				998AC8152EC17A70005DFF49 /* Exceptions for "TODOAppTests" folder in "TODO" target */,
+			);
+			path = TODOAppTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		992EA5A22EB1CDF400D0B1BA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		998AC7FB2EC1781D005DFF49 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -42,6 +78,7 @@
 				99D40B652EBADEAD0028D909 /* TodoEntity+CoreDataClass.swift */,
 				99D40B662EBADEAD0028D909 /* TodoEntity+CoreDataProperties.swift */,
 				992EA5A72EB1CDF400D0B1BA /* TODO */,
+				998AC7FF2EC1781D005DFF49 /* TODOAppTests */,
 				992EA5A62EB1CDF400D0B1BA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -50,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				992EA5A52EB1CDF400D0B1BA /* TODO.app */,
+				998AC7FE2EC1781D005DFF49 /* TODOTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -79,6 +117,29 @@
 			productReference = 992EA5A52EB1CDF400D0B1BA /* TODO.app */;
 			productType = "com.apple.product-type.application";
 		};
+		998AC7FD2EC1781D005DFF49 /* TODOTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 998AC8062EC1781D005DFF49 /* Build configuration list for PBXNativeTarget "TODOTests" */;
+			buildPhases = (
+				998AC7FA2EC1781D005DFF49 /* Sources */,
+				998AC7FB2EC1781D005DFF49 /* Frameworks */,
+				998AC7FC2EC1781D005DFF49 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				998AC8032EC1781D005DFF49 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				998AC7FF2EC1781D005DFF49 /* TODOAppTests */,
+			);
+			name = TODOTests;
+			packageProductDependencies = (
+			);
+			productName = TODOTests;
+			productReference = 998AC7FE2EC1781D005DFF49 /* TODOTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -86,11 +147,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2600;
+				LastSwiftUpdateCheck = 2610;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					992EA5A42EB1CDF400D0B1BA = {
 						CreatedOnToolsVersion = 26.0.1;
+					};
+					998AC7FD2EC1781D005DFF49 = {
+						CreatedOnToolsVersion = 26.1;
+						TestTargetID = 992EA5A42EB1CDF400D0B1BA;
 					};
 				};
 			};
@@ -109,12 +174,20 @@
 			projectRoot = "";
 			targets = (
 				992EA5A42EB1CDF400D0B1BA /* TODO */,
+				998AC7FD2EC1781D005DFF49 /* TODOTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		992EA5A32EB1CDF400D0B1BA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		998AC7FC2EC1781D005DFF49 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -133,7 +206,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		998AC7FA2EC1781D005DFF49 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		998AC8032EC1781D005DFF49 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 992EA5A42EB1CDF400D0B1BA /* TODO */;
+			targetProxy = 998AC8022EC1781D005DFF49 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		992EA5AE2EB1CDF700D0B1BA /* Debug */ = {
@@ -329,6 +417,50 @@
 			};
 			name = Release;
 		};
+		998AC8042EC1781D005DFF49 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8CKPNKA3V9;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ben.TODOTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TODO.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TODO";
+			};
+			name = Debug;
+		};
+		998AC8052EC1781D005DFF49 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8CKPNKA3V9;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ben.TODOTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TODO.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TODO";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -346,6 +478,15 @@
 			buildConfigurations = (
 				992EA5B12EB1CDF700D0B1BA /* Debug */,
 				992EA5B22EB1CDF700D0B1BA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		998AC8062EC1781D005DFF49 /* Build configuration list for PBXNativeTarget "TODOTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				998AC8042EC1781D005DFF49 /* Debug */,
+				998AC8052EC1781D005DFF49 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
