@@ -49,6 +49,5 @@ struct TodoItem: Identifiable, Hashable, Codable {
         self.createdAt = createdAt
         self.updatedAt = updatedAt
         self.priority = priority
-        
     }
 }

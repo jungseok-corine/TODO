@@ -80,6 +80,7 @@ class CoreDataTodoRepository: TodoRepositoryProtocol {
                 promise(.failure(NSError(domain: "RepositoryError", code: 0)))
                 return
             }
+            
             let request = NSFetchRequest<TodoEntity>(entityName: "TodoEntity")
             request.predicate = NSPredicate(format: "id == %@", todo.id as CVarArg)
             do {
