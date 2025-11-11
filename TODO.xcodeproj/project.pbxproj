@@ -28,16 +28,6 @@
 		99D40B662EBADEAD0028D909 /* TodoEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodoEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		998AC8152EC17A70005DFF49 /* Exceptions for "TODOAppTests" folder in "TODO" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				MockTodoRepository.swift,
-			);
-			target = 992EA5A42EB1CDF400D0B1BA /* TODO */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		992EA5A72EB1CDF400D0B1BA /* TODO */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -46,9 +36,6 @@
 		};
 		998AC7FF2EC1781D005DFF49 /* TODOAppTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				998AC8152EC17A70005DFF49 /* Exceptions for "TODOAppTests" folder in "TODO" target */,
-			);
 			path = TODOAppTests;
 			sourceTree = "<group>";
 		};
@@ -425,7 +412,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8CKPNKA3V9;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ben.TODOTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -447,7 +434,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 8CKPNKA3V9;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ben.TODOTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

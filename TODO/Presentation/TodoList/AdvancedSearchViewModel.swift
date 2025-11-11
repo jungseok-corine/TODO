@@ -6,11 +6,9 @@
 //
 
 import Combine
-import Observation
 import Foundation
 
-@Observable
-class AdvancedSearchViewModel {
+class AdvancedSearchViewModel: ObservableObject {
     @Published var titleQuery = ""
     @Published var priorityFilter: Int? = nil
     @Published var dateFilter: Date? = nil
