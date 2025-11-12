@@ -91,6 +91,7 @@ struct TodoListView: View {
     private var inputSection: some View {
         HStack {
             TextField("새로운 할일", text: $viewModel.newTodoTitle)
+                .accessibilityIdentifier("todoTextField")
                 .textFieldStyle(.roundedBorder)
                 .submitLabel(.done)
                 .onSubmit {
@@ -104,6 +105,7 @@ struct TodoListView: View {
                     .imageScale(.large)
                     .font(.title2)
             }
+            .accessibilityIdentifier("addButton")
             .disabled(viewModel.newTodoTitle.isEmpty)
         } //:HSTACK
         .padding()
