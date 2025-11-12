@@ -19,4 +19,4 @@ jobs:
         xcodebuild test \
           -scheme TODO \
           -destination 'platform=iOS Simulator,name=iPhone 16' \
-          -only-testing:TODOAppTests
+          -only-testing:TODOTests
