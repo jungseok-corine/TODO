@@ -14,11 +14,11 @@ jobs:
     runs-on: macos-latest
     
     steps:
-    - name: Checkout Code
+    - name: Checkout
       uses: actions/checkout@v4
     
-    - name: Run All Tests
+    - name: Run Tests
       run: |
         xcodebuild test \
           -scheme TODO \
-          -destination 'platform=iOS Simulator,name=iPhone 15'
+          -destination 'platform=iOS Simulator,OS=latest,name=iPhone SE (3rd generation)'
