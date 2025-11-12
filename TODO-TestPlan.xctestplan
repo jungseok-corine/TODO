@@ -1,0 +1,41 @@
+{
+  "configurations": [
+    {
+      "name": "Light Mode",
+      "options": {
+        "userInterfaceStyle": "light",
+        "language": "ko"
+      }
+    },
+    {
+      "name": "Dark Mode",
+      "options": {
+        "userInterfaceStyle": "dark",
+        "language": "ko"
+      }
+    },
+    {
+      "name": "English",
+      "options": {
+        "language": "en"
+      }
+    }
+  ],
+  "defaultOptions": {
+    "testTimeoutsEnabled": true,
+    "maximumTestExecutionTimeAllowance": 60
+  },
+  "testTargets": [
+    {
+      "target": {
+        "name": "TODOTests"
+      }
+    },
+    {
+      "target": {
+        "name": "TODOUITests"
+      },
+      "parallelizable": false
+    }
+  ]
+}
