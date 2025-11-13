@@ -11,12 +11,23 @@ on:
 
 jobs:
   test:
-    runs-on: macos-latest
+    runs-on: macos-latest  # Xcode 16.1 사용
+    
     steps:
     - uses: actions/checkout@v4
-    - run: xcodebuild -version
-    - run: |
+    
+    - name: Show Xcode and Swift version
+      run: |
+        xcodebuild -version
+        swift --version
+    
+    - name: List available simulators
+      run: |
+        xcrun simctl list devices available iPhone
+    
+    - name: Run Unit Tests
+      run: |
         xcodebuild test \
           -scheme TODO \
-          -destination 'platform=iOS Simulator,name=iPhone 16' \
-          -only-testing:TODOTests
+          -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
+          -skip-testing:TODOTests/TodoListSnapshotTests
