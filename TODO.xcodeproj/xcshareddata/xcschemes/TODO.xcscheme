@@ -30,7 +30,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:../TODO-TestPlan.xctestplan"
+            reference = "container:TODO-TestPlan.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
@@ -43,6 +43,17 @@
                BlueprintIdentifier = "998AC7FD2EC1781D005DFF49"
                BuildableName = "TODOTests.xctest"
                BlueprintName = "TODOTests"
+               ReferencedContainer = "container:TODO.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "99C49DE82EC56ED10013750F"
+               BuildableName = "TODOUITests.xctest"
+               BlueprintName = "TODOUITests"
                ReferencedContainer = "container:TODO.xcodeproj">
             </BuildableReference>
          </TestableReference>
