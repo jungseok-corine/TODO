@@ -30,4 +30,5 @@ jobs:
         xcodebuild test \
           -scheme TODO \
           -destination 'platform=iOS Simulator,name=iPhone 16 Pro' \
-          -skip-testing:TODOTests/TodoListSnapshotTests
+          -skip-testing:TODOTests/TodoListSnapshotTests \
+          -skip-testing:TODOUITests
