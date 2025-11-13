@@ -1,0 +1,31 @@
+{
+  "configurations" : [
+    {
+      "id" : "80ADF6DA-4CB6-4067-9690-A801C0584262",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:TODO.xcodeproj",
+        "identifier" : "998AC7FD2EC1781D005DFF49",
+        "name" : "TODOTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:TODO.xcodeproj",
+        "identifier" : "99C49DE82EC56ED10013750F",
+        "name" : "TODOUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
