@@ -9,8 +9,7 @@
 /* Begin PBXBuildFile section */
 		991E8D342EC419AE00ED6A92 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 991E8D332EC419AE00ED6A92 /* .gitignore */; };
 		99604F872EC40CCD00116D15 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 99604F862EC40CCD00116D15 /* SnapshotTesting */; };
-		99604FD42EC415A400116D15 /* TODO-TestPlan.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 99604FD32EC415A400116D15 /* TODO-TestPlan.xctestplan */; };
-		99C49E0E2EC571180013750F /* TODO-TestPlan.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 99604FD32EC415A400116D15 /* TODO-TestPlan.xctestplan */; };
+		99C49E8F2EC57CB10013750F /* TODO-TestPlan.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 99C49E8E2EC57CB10013750F /* TODO-TestPlan.xctestplan */; };
 		99D40B672EBADEAD0028D909 /* TodoEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D40B652EBADEAD0028D909 /* TodoEntity+CoreDataClass.swift */; };
 		99D40B682EBADEAD0028D909 /* TodoEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99D40B662EBADEAD0028D909 /* TodoEntity+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
@@ -35,9 +34,9 @@
 /* Begin PBXFileReference section */
 		991E8D332EC419AE00ED6A92 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		992EA5A52EB1CDF400D0B1BA /* TODO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TODO.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		99604FD32EC415A400116D15 /* TODO-TestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = "TODO-TestPlan.xctestplan"; sourceTree = "<group>"; };
 		998AC7FE2EC1781D005DFF49 /* TODOTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TODOTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		99C49DE92EC56ED10013750F /* TODOUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TODOUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		99C49E8E2EC57CB10013750F /* TODO-TestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = "TODO-TestPlan.xctestplan"; sourceTree = "<group>"; };
 		99D40B652EBADEAD0028D909 /* TodoEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodoEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
 		99D40B662EBADEAD0028D909 /* TodoEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodoEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -90,7 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				991E8D332EC419AE00ED6A92 /* .gitignore */,
-				99604FD32EC415A400116D15 /* TODO-TestPlan.xctestplan */,
+				99C49E8E2EC57CB10013750F /* TODO-TestPlan.xctestplan */,
 				99D40B652EBADEAD0028D909 /* TodoEntity+CoreDataClass.swift */,
 				99D40B662EBADEAD0028D909 /* TodoEntity+CoreDataProperties.swift */,
 				992EA5A72EB1CDF400D0B1BA /* TODO */,
@@ -244,6 +243,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				991E8D342EC419AE00ED6A92 /* .gitignore in Resources */,
+				99C49E8F2EC57CB10013750F /* TODO-TestPlan.xctestplan in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,7 +251,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				99604FD42EC415A400116D15 /* TODO-TestPlan.xctestplan in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,7 +258,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				99C49E0E2EC571180013750F /* TODO-TestPlan.xctestplan in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

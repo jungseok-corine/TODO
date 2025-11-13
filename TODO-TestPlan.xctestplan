@@ -1,41 +1,31 @@
 {
-  "configurations": [
+  "configurations" : [
     {
-      "name": "Light Mode",
-      "options": {
-        "userInterfaceStyle": "light",
-        "language": "ko"
-      }
-    },
-    {
-      "name": "Dark Mode",
-      "options": {
-        "userInterfaceStyle": "dark",
-        "language": "ko"
-      }
-    },
-    {
-      "name": "English",
-      "options": {
-        "language": "en"
+      "id" : "80ADF6DA-4CB6-4067-9690-A801C0584262",
+      "name" : "Configuration 1",
+      "options" : {
+
       }
     }
   ],
-  "defaultOptions": {
-    "testTimeoutsEnabled": true,
-    "maximumTestExecutionTimeAllowance": 60
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
   },
-  "testTargets": [
+  "testTargets" : [
     {
-      "target": {
-        "name": "TODOTests"
+      "target" : {
+        "containerPath" : "container:TODO.xcodeproj",
+        "identifier" : "998AC7FD2EC1781D005DFF49",
+        "name" : "TODOTests"
       }
     },
     {
-      "target": {
-        "name": "TODOUITests"
-      },
-      "parallelizable": false
+      "target" : {
+        "containerPath" : "container:TODO.xcodeproj",
+        "identifier" : "99C49DE82EC56ED10013750F",
+        "name" : "TODOUITests"
+      }
     }
-  ]
+  ],
+  "version" : 1
 }
