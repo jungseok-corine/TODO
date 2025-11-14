@@ -29,6 +29,7 @@ final class AddTodoUseCaseTests: XCTestCase {
         super.tearDown()
     }
     
+    @MainActor
     func test_할일추가_성공() async throws {
         // Given
         let title = "테스트 할 일"

@@ -28,6 +28,7 @@ final class FetchTodoUseCaseTests: XCTestCase {
         super.tearDown()
     }
     
+    @MainActor
     func test_할일목록_불러오기_성공() async throws {
         // Given: 샘플 데이터 준비
         mockRepository.addSampleTodos(count: 3)
@@ -50,6 +51,7 @@ final class FetchTodoUseCaseTests: XCTestCase {
         XCTAssertTrue(todos.isEmpty, "초기 상태는 비어있어야 함")
     }
     
+    @MainActor
     func test_필터링_진행중만() async throws {
         // Given
         mockRepository.addSampleTodos(count: 4)

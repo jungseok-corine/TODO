@@ -6,83 +6,58 @@
 //
 
 import Foundation
-import Combine
-//import CoreData
 @testable import TODO
 
 class MockTodoRepository: TodoRepositoryProtocol {
     
     // 테스트용 데이터
     var todos: [TodoItem] = []
-    
     // 에러 시뮬레이션용
     var shouldFail = false // 에러 테스트용
     var errorToThrow: Error = RepositoryError.notFound
     
-    func fetchAll() -> AnyPublisher<[TodoItem], any Error> {
+    func fetchAll() async throws -> [TodoItem] {
         if shouldFail {
-            return Fail(error: errorToThrow)
-                .eraseToAnyPublisher()
+            throw errorToThrow
         }
         
-        return Just(todos)
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
+        return todos
     }
     
-    func add(_ item: TodoItem) -> AnyPublisher<Void, any Error> {
+    func add(_ item: TodoItem) async throws {
         
         if shouldFail {
-            return Fail(error: errorToThrow)
-                .eraseToAnyPublisher()
+            throw errorToThrow
         }
         
-        todos.append(item)
-        
-        return Just(())
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
+        return todos.append(item)
     }
     
-    func update(_ item: TodoItem) -> AnyPublisher<Void, any Error> {
-        
-        
+    func update(_ item: TodoItem) async throws {
         if self.shouldFail {
-            return Fail(error: errorToThrow)
-                .eraseToAnyPublisher()
+            throw errorToThrow
         }
         
         // 배열에서 해당 Id를 가진 항목 찾기
         guard let index = self.todos.firstIndex(where: { $0.id == item.id }) else {
-            return Fail(error: errorToThrow)
-                .eraseToAnyPublisher()
+            throw errorToThrow
         }
         
         // 배열에서 해당 인덱스의 항목 업데이트
-        todos[index] = item
-        
-        return Just(())
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
+        return todos[index] = item
     }
     
-    func delete(id: UUID) -> AnyPublisher<Void, any Error> {
+    func delete(id: UUID) async throws {
         if shouldFail {
-            return Fail(error: errorToThrow)
-                .eraseToAnyPublisher()
+            throw errorToThrow
         }
         
         guard let index = todos.firstIndex(where: { $0.id == id }) else {
-            return Fail(error: errorToThrow)
-                .eraseToAnyPublisher()
+            throw errorToThrow
         }
         
-        self.todos.remove(at: index)
-        
-        return Just(())
-            .setFailureType(to: Error.self)
-            .eraseToAnyPublisher()
-    }
+        todos.remove(at: index)
+        }
 }
 
 extension MockTodoRepository {

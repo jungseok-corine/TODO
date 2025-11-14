@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 
 class DeleteTodoUseCase {
     private let repository: TodoRepositoryProtocol
@@ -17,7 +16,5 @@ class DeleteTodoUseCase {
     
     func execute(id: UUID) async throws {
         try await repository.delete(id: id)
-            .values
-            .first(where: { _ in true })!
     }
 }
