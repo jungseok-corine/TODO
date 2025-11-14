@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - TodoItem
 
-struct TodoItem: Identifiable, Hashable, Codable {
+struct TodoItem: Identifiable, Hashable, Codable, Sendable {
     let id: UUID
     var title: String
     var detail: String?

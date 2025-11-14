@@ -30,7 +30,7 @@ final class DeleteTodoUseCaseTests: XCTestCase {
     }
     
     // MARK: - Tests
-    
+    @MainActor
     func test_할일삭제_성공() async throws {
         // Given
         mockRepository.addSampleTodos(count: 3)

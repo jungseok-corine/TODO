@@ -28,6 +28,7 @@ final class ToggleTodoUseCaseTests: XCTestCase {
         super.tearDown()
     }
     
+    @MainActor
     func test_미완료_를_완료로_토글() async throws {
         // Given
         let todo = TodoItem(title: "테스트", isCompleted: false)
@@ -43,7 +44,7 @@ final class ToggleTodoUseCaseTests: XCTestCase {
     
     func test_존재하지않는_할일_토글시_에러() async {
         // Given
-        let todo = TodoItem(title: "존재하지 않음")
+        let todo = await TodoItem(title: "존재하지 않음")
         // Repository는 비어있음
         
         // When & Then
