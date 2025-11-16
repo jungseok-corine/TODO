@@ -15,6 +15,6 @@ class DeleteTodoUseCase {
     }
     
     func execute(id: UUID) async throws {
-        try await repository.delete(id: id)
+        try await repository.deleteTodo(id: id)
     }
 }

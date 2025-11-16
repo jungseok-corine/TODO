@@ -16,7 +16,7 @@ class MockTodoRepository: TodoRepositoryProtocol {
     var shouldFail = false // 에러 테스트용
     var errorToThrow: Error = RepositoryError.notFound
     
-    func fetchAll() async throws -> [TodoItem] {
+    func fetchTodos() async throws -> [TodoItem] {
         if shouldFail {
             throw errorToThrow
         }
@@ -24,7 +24,7 @@ class MockTodoRepository: TodoRepositoryProtocol {
         return todos
     }
     
-    func add(_ item: TodoItem) async throws {
+    func addTodo(_ item: TodoItem) async throws {
         
         if shouldFail {
             throw errorToThrow
@@ -33,7 +33,7 @@ class MockTodoRepository: TodoRepositoryProtocol {
         return todos.append(item)
     }
     
-    func update(_ item: TodoItem) async throws {
+    func updateTodo(_ item: TodoItem) async throws {
         if self.shouldFail {
             throw errorToThrow
         }
@@ -47,7 +47,7 @@ class MockTodoRepository: TodoRepositoryProtocol {
         return todos[index] = item
     }
     
-    func delete(id: UUID) async throws {
+    func deleteTodo(id: UUID) async throws {
         if shouldFail {
             throw errorToThrow
         }

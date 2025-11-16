@@ -8,10 +8,10 @@
 import Foundation
 
 protocol TodoRepositoryProtocol {
-    func fetchAll() async throws -> [TodoItem]
-    func add(_ item: TodoItem) async throws
-    func update(_ item: TodoItem) async throws
-    func delete(id: UUID) async throws
+    func fetchTodos() async throws -> [TodoItem]
+    func addTodo(_ item: TodoItem) async throws
+    func updateTodo(_ item: TodoItem) async throws
+    func deleteTodo(id: UUID) async throws
 }
 
 
