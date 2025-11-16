@@ -70,6 +70,9 @@ struct TodoListView: View {
         .onOpenURL { url in
             handleDeepLink(url: url)
         }
+        .task {
+            await viewModel.loadTodos()
+        }
     }
     
     // MARK: -  FUNCTION

@@ -13,70 +13,77 @@ class CoreDataTodoRepository: TodoRepositoryProtocol {
     
     private let context: NSManagedObjectContext
     
-    init(context: NSManagedObjectContext) {
+    init(context: NSManagedObjectContext = PersistenceController.shared.viewContext) {
         self.context = context
     }
     
-    func fetchAll() async throws -> [TodoItem] {
-        let request = NSFetchRequest<TodoEntity>(entityName: "TodoEntity")
-        
+    func fetchTodos() async throws -> [TodoItem] {
+        let request = TodoEntity.fetchRequest()
         // 정렬: 생성일 기준 내림차순
         request.sortDescriptors = [
-            NSSortDescriptor(key: "createdAt", ascending: false)
+            NSSortDescriptor(keyPath: \TodoEntity.createdAt, ascending: false)
         ]
         
-        let entities = try context.fetch(request)
-        return entities.map { entity in
-            TodoItem(
-                id: entity.id ?? UUID(),
-                title: entity.title ?? "",
-                detail: entity.detail,
-                isCompleted: entity.isCompleted,
-                createdAt: entity.createdAt ?? Date(),
-                priority: Int(entity.priority)
-            )
+        do {
+            let entities = try context.fetch(request)
+            return entities.map { TodoEntityMapper.toDomain($0) }
+        } catch {
+            print("❌ Fetch 실패: \(error)")
+            throw TodoError.fetchFailed
         }
     }
     
-    func add(_ todo: TodoItem) async throws {
-        let entity = TodoEntity(context: context)
-        entity.id = todo.id
-        entity.title = todo.title
-        entity.detail = todo.detail
-        entity.isCompleted = todo.isCompleted
-        entity.createdAt = todo.createdAt
-        entity.priority = Int16(todo.priority)
+    func addTodo(_ todo: TodoItem) async throws {
+        _ = TodoEntityMapper.toEntity(todo, context: context)
         
-        try context.save()
+        do {
+            try context.save()
+            print("✅ Todo 추가 성공: \(todo.title)")
+        } catch {
+            context.rollback()
+            print("❌ Todo 추가 실패: \(error)")
+            throw TodoError.saveFailed
+        }
     }
     
-    func update(_ todo: TodoItem) async throws {
-        let request = NSFetchRequest<TodoEntity>(entityName: "TodoEntity")
+    func updateTodo(_ todo: TodoItem) async throws {
+        let request = TodoEntity.fetchRequest()
         request.predicate = NSPredicate(format: "id == %@", todo.id as CVarArg)
         
-        guard let entity = try context.fetch(request).first else {
-            throw RepositoryError.notFound
+        do {
+            let entities = try context.fetch(request)
+            guard let entity = entities.first else {
+                throw RepositoryError.notFound
+            }
+            
+            TodoEntityMapper.update(entity, with: todo)
+            try self.context.save()
+            print("✅ Todo 업데이트 성공: \(todo.title)")
+        } catch {
+            context.rollback()
+            print("❌ Todo 업데이트 실패: \(error)")
+            throw TodoError.updateFailed
         }
-        
-        entity.title = todo.title
-        entity.detail = todo.detail
-        entity.isCompleted = todo.isCompleted
-        entity.updatedAt = Date()
-        entity.priority = Int16(todo.priority)
-        
-        try self.context.save()
     }
     
-    func delete(id: UUID) async throws {
-        let request = NSFetchRequest<TodoEntity>(entityName: "TodoEntity")
+    func deleteTodo(id: UUID) async throws {
+        let request = TodoEntity.fetchRequest()
         request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
         
-        guard let entity = try context.fetch(request).first else {
-            throw RepositoryError.notFound
+        do {
+            let entities = try context.fetch(request)
+            guard let entity = entities.first else {
+                throw TodoError.notFound
+            }
+            
+            context.delete(entity)
+            try context.save()
+            print("✅ Todo 삭제 성공: \(id)")
+        } catch {
+            context.rollback()
+            print("❌ Todo 삭제 실패: \(error)")
+            throw TodoError.deleteFailed
         }
-        
-        context.delete(entity)
-        try context.save()
     }
 }
 

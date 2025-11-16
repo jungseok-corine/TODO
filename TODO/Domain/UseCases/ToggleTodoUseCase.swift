@@ -17,6 +17,6 @@ class ToggleTodoUseCase {
     func execute(todo: TodoItem) async throws {
         var updatedTodo = todo
         updatedTodo.isCompleted.toggle()
-        try await repository.update(updatedTodo)
+        try await repository.updateTodo(updatedTodo)
     }
 }

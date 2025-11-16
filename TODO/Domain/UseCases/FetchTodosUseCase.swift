@@ -18,7 +18,7 @@ class FetchTodosUseCase {
 
     func execute(filter: TodoFilter = .all) async throws -> [TodoItem] {
         // Combine Publisher를 async sequence로 변환
-        let allTodos: [TodoItem] = try await repository.fetchAll()
+        let allTodos: [TodoItem] = try await repository.fetchTodos()
         
         // 필터링 적용
         switch filter {

@@ -20,6 +20,6 @@ class AddTodoUseCase {
         }
         
         let todo = TodoItem(title: title)
-        try await repository.add(todo)
+        try await repository.addTodo(todo)
     }
 }

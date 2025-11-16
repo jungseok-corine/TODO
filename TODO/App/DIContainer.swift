@@ -5,39 +5,41 @@
 //  Created by 오정석 on 3/11/2025.
 //
 
-import Foundation
+import CoreData
 
 class DIContainer {
     
     static let shared = DIContainer()
     
-    private init() {}
+    private let context: NSManagedObjectContext
+    
+    private init() {
+        self.context = PersistenceController.shared.viewContext
+    }
     
     // MARK: - Repositories
     
     /// TdodoRepository 인스턴스 (전역에서 하나만 사용)
-    private lazy var todoRepository: TodoRepositoryProtocol = {
-        return CoreDataTodoRepository(
-            context: PersistenceController.shared.viewContext
-        )
-    }()
+    func makeTodoRepository() -> TodoRepositoryProtocol {
+        CoreDataTodoRepository(context: context)
+    }
     
     // MARK: - UseCases
     
     func makeFetchTodosUseCase() -> FetchTodosUseCase {
-        FetchTodosUseCase(repository: todoRepository)
+        FetchTodosUseCase(repository: makeTodoRepository())
     }
     
     func makeAddTodoUseCase() -> AddTodoUseCase {
-        AddTodoUseCase(repository: todoRepository)
+        AddTodoUseCase(repository: makeTodoRepository())
     }
     
     func makeToggleTodoUseCase() -> ToggleTodoUseCase {
-        ToggleTodoUseCase(repository: todoRepository)
+        ToggleTodoUseCase(repository: makeTodoRepository())
     }
     
     func makeDeleteTodoUseCase() -> DeleteTodoUseCase {
-        DeleteTodoUseCase(repository: todoRepository)
+        DeleteTodoUseCase(repository: makeTodoRepository())
     }
     
     // MARK: - ViewModels
@@ -45,19 +47,19 @@ class DIContainer {
     /// TodoViewModel 생성
     func makeTodoViewModel() -> TodoViewModel {
         TodoViewModel(
-            fetchTodosUseCase: FetchTodosUseCase(repository: todoRepository),
-            addTodoUseCase: AddTodoUseCase(repository: todoRepository),
-            toggleTodoUseCase: ToggleTodoUseCase(repository: todoRepository),
-            deleteTodoUseCase: DeleteTodoUseCase(repository: todoRepository)
+            fetchTodosUseCase: makeFetchTodosUseCase(),
+            addTodoUseCase: makeAddTodoUseCase(),
+            toggleTodoUseCase: makeToggleTodoUseCase(),
+            deleteTodoUseCase: makeDeleteTodoUseCase()
         )
     }
     
     func makeTodoViewModel(todoRepository: TodoRepositoryProtocol) -> TodoViewModel {
         TodoViewModel(
-            fetchTodosUseCase: FetchTodosUseCase(repository: todoRepository),
-            addTodoUseCase: AddTodoUseCase(repository: todoRepository),
-            toggleTodoUseCase: ToggleTodoUseCase(repository: todoRepository),
-            deleteTodoUseCase: DeleteTodoUseCase(repository: todoRepository)
+            fetchTodosUseCase: makeFetchTodosUseCase(),
+            addTodoUseCase: makeAddTodoUseCase(),
+            toggleTodoUseCase: makeToggleTodoUseCase(),
+            deleteTodoUseCase: makeDeleteTodoUseCase()
         )
     }
 }
