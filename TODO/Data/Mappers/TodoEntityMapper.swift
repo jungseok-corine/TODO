@@ -32,6 +32,9 @@ struct TodoEntityMapper {
         entity.createdAt = item.createdAt
         entity.updatedAt = item.updatedAt
         entity.priority = Int16(item.priority)
+        
+        entity.sectionDate = sectionDateFormatter.string(from: item.createdAt)
+        
         return entity
     }
     
@@ -42,5 +45,14 @@ struct TodoEntityMapper {
         entity.isCompleted = item.isCompleted
         entity.priority = Int16(item.priority)
         entity.updatedAt = Date()
+        
+        entity.sectionDate = sectionDateFormatter.string(from: entity.createdAt ?? Date())
     }
+    
+    // MARK: - Helper
+       private static let sectionDateFormatter: DateFormatter = {
+           let formatter = DateFormatter()
+           formatter.dateFormat = "yyyy-MM-dd"
+           return formatter
+       }()
 }

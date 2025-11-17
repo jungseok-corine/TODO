@@ -88,6 +88,45 @@ class CoreDataTodoRepository: TodoRepositoryProtocol {
 }
 
 extension CoreDataTodoRepository {
+    
+    func makeFetchedResultsController() -> NSFetchedResultsController<TodoEntity> {
+        let request = TodoEntity.fetchRequest()
+        request.sortDescriptors = [
+            NSSortDescriptor(keyPath: \TodoEntity.createdAt, ascending: false)
+        ]
+        
+        // 필터 적용 가능
+//         request.predicate = NSPredicate(format: "isCompleted == false")
+        
+        let controller = NSFetchedResultsController(
+            fetchRequest: request,
+            managedObjectContext: context,
+            sectionNameKeyPath: nil,
+            cacheName: "TodoCache"
+        )
+        
+        return controller
+    }
+    
+    func makeSectionedFetchedResultsController() -> NSFetchedResultsController<TodoEntity> {
+        let request = TodoEntity.fetchRequest()
+        
+        // 중요: 섹션 키로 정렬해야함
+        request.sortDescriptors = [
+            NSSortDescriptor(keyPath: \TodoEntity.sectionDate, ascending: false),
+            NSSortDescriptor(keyPath: \TodoEntity.createdAt, ascending: false)
+        ]
+        
+        let controller = NSFetchedResultsController(
+            fetchRequest: request,
+            managedObjectContext: context,
+            sectionNameKeyPath: "sectionDate",
+            cacheName: "TodoSectionCache"
+        )
+        
+        return controller
+    }
+    
     // 완료되지 않은 TODO만 조회
     func fetchIncompleteTodos() async throws -> [TodoItem] {
         let request = NSFetchRequest<TodoEntity>(entityName: "TodoEntity")

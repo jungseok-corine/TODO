@@ -26,9 +26,9 @@ class DIContainer {
     
     // MARK: - UseCases
     
-    func makeFetchTodosUseCase() -> FetchTodosUseCase {
-        FetchTodosUseCase(repository: makeTodoRepository())
-    }
+//    func makeFetchTodosUseCase() -> FetchTodosUseCase {
+//        FetchTodosUseCase(repository: makeTodoRepository())
+//    }
     
     func makeAddTodoUseCase() -> AddTodoUseCase {
         AddTodoUseCase(repository: makeTodoRepository())
@@ -47,8 +47,7 @@ class DIContainer {
     /// TodoViewModel 생성
     func makeTodoViewModel() -> TodoViewModel {
         TodoViewModel(
-            fetchTodosUseCase: makeFetchTodosUseCase(),
-            addTodoUseCase: makeAddTodoUseCase(),
+            repository: CoreDataTodoRepository(), addTodoUseCase: makeAddTodoUseCase(),
             toggleTodoUseCase: makeToggleTodoUseCase(),
             deleteTodoUseCase: makeDeleteTodoUseCase()
         )
@@ -56,7 +55,7 @@ class DIContainer {
     
     func makeTodoViewModel(todoRepository: TodoRepositoryProtocol) -> TodoViewModel {
         TodoViewModel(
-            fetchTodosUseCase: makeFetchTodosUseCase(),
+            repository: CoreDataTodoRepository(),
             addTodoUseCase: makeAddTodoUseCase(),
             toggleTodoUseCase: makeToggleTodoUseCase(),
             deleteTodoUseCase: makeDeleteTodoUseCase()
