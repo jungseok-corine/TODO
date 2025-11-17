@@ -49,12 +49,6 @@ struct TodoListView: View {
             .toolbar {
                 toolbarContent
             }
-            .task {
-                await viewModel.loadTodos()
-            }
-            .refreshable {
-                await viewModel.loadTodos()
-            }
             // ⭐️ Error Alert 추가
             .alert("오류", isPresented: $showErrorAlert) {
                 Button("확인", role: .cancel) { viewModel.errorMessage = nil }
@@ -69,9 +63,6 @@ struct TodoListView: View {
         } //:NAVSTACK
         .onOpenURL { url in
             handleDeepLink(url: url)
-        }
-        .task {
-            await viewModel.loadTodos()
         }
     }
     
@@ -127,11 +118,7 @@ struct TodoListView: View {
     
     @ViewBuilder
     private var contentSection: some View {
-        if viewModel.isLoading {
-            Spacer()
-            ProgressView()
-            Spacer()
-        } else if viewModel.filteredTodos.isEmpty {
+        if viewModel.filteredTodos.isEmpty {
             Spacer()
             VStack(spacing: 12) {
                 Image(systemName: "checkmark.circle")
@@ -144,15 +131,19 @@ struct TodoListView: View {
             Spacer()
         } else {
             List {
-                ForEach(viewModel.filteredTodos, id: \.id) { todo in
-                    TodoRow(todo: todo) {
-                        Task { await viewModel.toggleComplete(todo: todo)}
-                    }
+                ForEach(viewModel.sections, id: \.name) { section in
+                    Section(header: sectionHeader(for: section)) {
+                        ForEach(section.todos) { todo in
+                            TodoRow(todo: todo) {
+                                Task { await viewModel.toggleComplete(todo: todo) }
+                            }
+                        } //:LOOP
+                    } //:SECTION
                 } //:LOOP
                 .onDelete { indexSet in
                     indexSet.forEach { index in
                         let todo = viewModel.filteredTodos[index]
-                        Task { await viewModel.deleteTodo(id: todo.id)}
+                        Task { await viewModel.deleteTodo(id: todo.id) }
                     }
                 }
             } //:LIST
@@ -201,6 +192,17 @@ struct TodoListView: View {
             SettingsView()
         case .statistics:
             StatisticsView()
+        }
+    }
+    
+    private func sectionHeader(for section: TodoSection) -> some View {
+        HStack {
+            Text(section.title)
+                .font(.headline)
+            Spacer()
+            Text("\(section.todos.count)개")
+                .font(.caption)
+                .foregroundStyle(.secondary)
         }
     }
 }

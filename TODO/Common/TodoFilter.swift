@@ -8,7 +8,10 @@
 import Foundation
 
 enum TodoFilter: String, CaseIterable {
-    case all = "전체"
-    case active = "진행중"
-    case completed = "완료"
+    case all
+    case active
+    case completed
+    case highPriority
+    case today
+    case thisWeek
 }
